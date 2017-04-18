@@ -8,3 +8,7 @@ https://www.sharelatex.com/project/56fc90295fdb17c83a89a6cb
 
 ## Graficos
 https://www.draw.io/
+
+## TPs de otros cuatrimestres
+https://github.com/LeandroLovisolo/ISW2-TP1
+https://github.com/ealmansi/isw2-tp2
