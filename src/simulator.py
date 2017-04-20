@@ -154,18 +154,28 @@ class Engineer(object):
 		pass
 
 	def decidesAreaIsStillProfitable(self, anExtractionArea):
-		pass
+		return True
 
 
 class Reservoir(object):
 
 	def __init__(self, sizeInCubicMeters, gasComposition, petrolComposition):
-		self.originalSize = sizeInCubicMeters
-		self.currentSize = sizeInCubicMeters
+		self.originalVolume = sizeInCubicMeters
+		self.currentVolume = sizeInCubicMeters
 		self.gasComposition = gasComposition
 		self.petrolComposition = petrolComposition
 		self.waterComposition = 1.0 - petrolComposition - gasComposition
 		assert(self.waterComposition >= 0)
+
+	def reinject(self, waterVolume, gasVolume):
+			
+		reinjectedVolume = waterVolume + gasVolume
+
+		if reinjectedVolume + currentVolume > originalVolume:
+			print 'Error: you cannot reinject more than the original volume.'
+			exit()
+
+		petrolComposition = petrolComposition*currentVolume/(currentVolume+reinjectedVolume)
 
 
 class ExtractionArea(object):
@@ -182,8 +192,12 @@ class ExtractionArea(object):
 		# beta will acummulate the sum of beta_i for i <= T.
 		self.betaSum = 0
 
+		# containers for processing plants/storage
+		self.separatingPlants = []
+		self.storageTanks = []
+
 	def addLandLot(self, aLandLot):
-		landLots.append(aLandLot)
+		self.landLots.append(aLandLot)
 
 	def countEnabledOilRigs(self):
 		enabledCount = 0
@@ -200,6 +214,7 @@ class LandLot(object):
 		self.drillingRig = None
 		self.terrainType = terrainType
 		self.distanceToReservoir = distanceToReservoir
+		self.drilledSoFar = 0
 
 	def addDrillingRig(self, aDrillingRig):
 		self.drillingRig = aDrillingRig
@@ -207,6 +222,12 @@ class LandLot(object):
 	def addOilRig(self, anOilRig):
 		self.drillingRig = None
 		self.oilRig = oilRig
+
+	def drill(self, distance):
+		self.drilledSoFar = min(self.drilledSoFar + distance, self.distanceToReservoir)
+
+		drillingDone = self.drilledSoFar == self.distanceToReservoir
+		return drillingDone
 
 
 class DrillingRig(object):
@@ -217,22 +238,42 @@ class DrillingRig(object):
 		self.rentPerDay = rentPerDay
 		self.minRentPeriodInDays = minRentPeriodInDays
 		self.fuelConsumptionPerDay = fuelConsumptionPerDay
+		self.landLot = None
 
+	def buildIn(self, aLandLot):
+		self.landLot = aLandLot
+
+	def drill(self):
+		if self.landLot is None:
+			print 'Error: drill needs to be built in a land lot before drilling.'
+
+		maxDrilling = self.dailyExcavationPower * self.getLandTypeMultiplier(self.landLot.terrainType)
+
+		self.landLot.drill(maxDrilling)
+
+	def getLandTypeMultiplier(self, landType):
+		return {'rocky': 0.4,
+				'clay':  1.1,
+				'normal': 1.0}.get(landType, 1.0)
 
 class OilRig(object):
 
-	def __init__(self, anExtractionArea, distanceToReservoir):
+	def __init__(self, anExtractionArea, distanceToReservoir, initialPressure):
 		self.isEnabled = False
 		self.distanceToReservoir = distanceToReservoir
 		self.currentPressure = self.calculatePressure(anExtractionArea, distanceToReservoir)
+		self.initialPressure = initialPressure
 
 	def calculatePressure(self, anExtractionArea, distanceToReservoir):
 		initialPressure = calculateInitialPressure(distanceToReservoir)
 		self.currentPressure = initialPressure * Math.exp(-anExtractionArea.betaSum)
 
 	def calculateInitialPressure(distanceToReservoir):
-		''' it is not really specified, but the initial pressure of any rig could be different '''
-		return 10
+		''' 
+		it is not really specified, but the initial pressure of any rig could be different
+		according to an email, the initial pressure is set on construction.
+		'''
+		return self.initialPressure
 
 	def extractProduct(self, anExtractionArea):
 		enabledRigs = anExtractionArea.countEnabledOilRigs()
