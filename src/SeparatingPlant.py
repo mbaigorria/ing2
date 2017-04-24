@@ -16,27 +16,27 @@ class SeparatingPlant(object):
 		return s
 
 	def receiveVolume(self, volumeToSeparate, gasComposition, petrolComposition):
-		''' in every period, the plant separates all the volume it contains. therefore
-		there wont be different concentration mixtures since the reservoir composition
-		is the same for all rigs '''
 
-		if volumeToSeparate > self.separatingCapacity:
-			print 'Error: a separating plant cannot separate more than it\'s capacity.'
-			exit()
+		volumeToSeparate = min(volumeToSeparate, self.separatingCapacity - self.usedCapacity)
 
-		self.gasComposition = gasComposition
-		self.petrolComposition = petrolComposition
+		# update volume composition in separating plant
+		self.gasComposition = self.gasComposition * self.usedCapacity + gasComposition / (self.usedCapacity + volumeToSeparate)
+		self.petrolComposition = self.petrolComposition * self.usedCapacity + petrolComposition / (self.usedCapacity + volumeToSeparate)
 		self.waterComposition = 1.0 - petrolComposition - gasComposition
 
 		self.usedCapacity += volumeToSeparate
 
-	def separateProducts(self):
+		return volumeToSeparate		
 
-		gas    = self.usedCapacity * self.gasComposition
-		petrol = self.usedCapacity * self.petrolComposition
-		water  = self.usedCapacity * self.waterComposition
+	def separateProducts(self, volumeToSeparate):
 
-		self.usedCapacity = 0
+		volumeToSeparate = min(volumeToSeparate, self.usedCapacity)
+
+		gas    = self.volumeToSeparate * self.gasComposition
+		petrol = self.volumeToSeparate * self.petrolComposition
+		water  = self.volumeToSeparate * self.waterComposition
+
+		self.usedCapacity -= volumeToSeparate
 
 		return gas, petrol, water
 

@@ -14,7 +14,7 @@ class StorageTank(object):
 		s += 'constructionTime: {}\n'.format(self.constructionTime)
 		s += 'constructionCost: {}\n'.format(self.constructionCost)
 		s += 'storageCapacity: {}\n'.format(self.storageCapacity)
-		s += 'volumeStores: {}\n'.format(self.volumeStored)
+		s += 'volumeStored: {}\n'.format(self.volumeStored)
 		return s
 
 	def store(self, volumeToStore):

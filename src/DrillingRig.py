@@ -24,6 +24,7 @@ class DrillingRig(object):
 	def drill(self):
 		if self.landLot is None:
 			print 'Error: drill needs to be built in a land lot before drilling.'
+			exit()
 
 		maxDrilling = self.dailyExcavationPower * self.getLandTypeMultiplier(self.landLot.terrainType)
 

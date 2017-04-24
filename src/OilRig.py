@@ -5,6 +5,7 @@ class OilRig(object):
 		self.distanceToReservoir = distanceToReservoir
 		self.currentPressure = self.calculatePressure(anExtractionArea, distanceToReservoir)
 		self.initialPressure = initialPressure
+		self.extractionArea = anExtractionArea
 
 	def __str__(self):
 		s = 'Oil Rig\n'
@@ -18,26 +19,26 @@ class OilRig(object):
 		initialPressure = calculateInitialPressure(distanceToReservoir)
 		self.currentPressure = initialPressure * Math.exp(-anExtractionArea.betaSum)
 
-	def calculateInitialPressure(distanceToReservoir):
+	def calculateInitialPressure(self, distanceToReservoir):
 		''' 
 		it is not really specified, but the initial pressure of any rig could be different
 		according to an email, the initial pressure is set on construction.
 		'''
 		return self.initialPressure
 
-	def extractProduct(self, anExtractionArea):
+	def extractProduct(self):
 		enabledRigs = anExtractionArea.countEnabledOilRigs()
 
-		alpha_1 = anExtractionArea.alpha_1
-		alpha_2 = anExtractionArea.alpha_2
+		alpha_1 = self.extractionArea.alpha_1
+		alpha_2 = self.extractionArea.alpha_2
 
 		if not anOilRig.isEnabled:
-			print 'Error: you cannot extract oil from an oil rig that is not enabled.'
+			print 'Error: you cannot extract oil from an oil rig that is not enabled by the Engineer.'
 			exit()
 
-		extractedVolume = alpha_1*(self.currentPressure/enabledRigs) + alpha_2*(self.currentPressure/enabledRigs)**2
+		maxExtractionVolume = alpha_1*(self.currentPressure/enabledRigs) + alpha_2*(self.currentPressure/enabledRigs)**2
 
-		return extractedVolume
+		return extractionArea.reservoir.extract(maxExtractionVolume)
 
 
 if __name__ == '__main__':

@@ -25,7 +25,13 @@ class ExtractionArea(object):
 	def addLandLot(self, aLandLot):
 		self.landLots.append(aLandLot)
 
-	def countEnabledOilRigs(self):
+	def addSeparatingPlant(self, aSeparatingPlant):
+		self.separatingPlants.append(aSeparatingPlant)
+
+	def addStorageTank(self, aStorageTank):
+		self.storageTanks.append(aStorageTank)
+
+	def enabledOilRigsCount(self):
 		enabledCount = 0
 		for lot in self.landLots:
 			if lot.oilRig is not None:

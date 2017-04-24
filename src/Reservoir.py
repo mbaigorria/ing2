@@ -9,6 +9,18 @@ class Reservoir(object):
 		self.reinjectionLimit = reinjectionLimit
 		assert(self.waterComposition >= 0)
 
+	def extract(self, extractionVolume):
+
+		totalVolume = min(extractionVolume, self.currentVolume)
+
+		extractedPetrol = totalVolume * self.petrolComposition
+		extractedGas    = totalVolume * self.gasComposition
+		extractedWater  = totalVolume * self.waterComposition
+
+		self.currentVolume -= totalVolume
+
+		return extractedGas, extractedPetrol, extractedWater
+
 	def reinject(self, waterVolume, gasVolume):
 			
 		reinjectedVolume = waterVolume + gasVolume

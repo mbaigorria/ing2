@@ -26,8 +26,8 @@ class LandLot(object):
 	def drill(self, distance):
 		self.drilledSoFar = min(self.drilledSoFar + distance, self.distanceToReservoir)
 
-		drillingDone = self.drilledSoFar == self.distanceToReservoir
-		return drillingDone
+		isDrillingDone = self.drilledSoFar == self.distanceToReservoir
+		return isDrillingDone
 
 
 if __name__ == '__main__':
