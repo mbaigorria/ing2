@@ -12,9 +12,12 @@ class ExtractionArea(object):
 		# beta will acummulate the sum of beta_i for i <= T.
 		self.betaSum = 0
 
-		# containers for processing plants/storage
+		# container for processing plants
 		self.separatingPlants = []
-		self.storageTanks = []
+
+		# containers for storage tanks
+		self.gasTanks = []
+		self.waterTanks = []
 
 	def __str__(self):
 		s = 'ExtractionArea\n'
@@ -28,8 +31,11 @@ class ExtractionArea(object):
 	def addSeparatingPlant(self, aSeparatingPlant):
 		self.separatingPlants.append(aSeparatingPlant)
 
-	def addStorageTank(self, aStorageTank):
-		self.storageTanks.append(aStorageTank)
+	def addGasTank(self, aStorageTank):
+		self.gasTanks.append(aStorageTank)
+
+	def addWaterTank(self, aStorageTank):
+		self.waterTanks.append(aStorageTank)
 
 	def enabledOilRigsCount(self):
 		enabledCount = 0
