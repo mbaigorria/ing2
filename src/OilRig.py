@@ -26,7 +26,7 @@ class OilRig(object):
 		'''
 		return self.initialPressure
 
-	def extractProduct(self):
+	def extractProduct(self, volumeToExtract):
 		enabledRigs = anExtractionArea.countEnabledOilRigs()
 
 		alpha_1 = self.extractionArea.alpha_1
@@ -38,8 +38,9 @@ class OilRig(object):
 
 		maxExtractionVolume = alpha_1*(self.currentPressure/enabledRigs) + alpha_2*(self.currentPressure/enabledRigs)**2
 
-		return extractionArea.reservoir.extract(maxExtractionVolume)
+		extractionVolume = min(volumeToExtract, maxExtractionVolume)
 
+		return extractionArea.reservoir.extract(extractionVolume)
 
 if __name__ == '__main__':
 
