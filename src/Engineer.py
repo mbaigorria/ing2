@@ -23,7 +23,7 @@ class Engineer(object):
 
 	def decidesReinjection():
 		''' if oil is reinjected, remember oil rig pressures must then be updated '''
-		pass
+		return 0, 0
 
 	def decidesToKeepExtractingProduct(self, anExtractionArea, currentTime):
 		if not self.decidesAreaIsStillProfitable(anExtractionArea):
@@ -32,14 +32,16 @@ class Engineer(object):
 			return False
 
 		# TODO: critic dilution, max expenditure.
-		pass
+		return False
 
 	def decidesAreaIsStillProfitable(self, anExtractionArea):
 		return True
 
-	def decidesToSellGas(self):
+	def decidesToSell(self):
 		# check how much gas is available in the storage tanks, and sell it all or keep some for reinjection.
-		pass
+		gasToSell = 0
+		oilToSell = 0
+		return gasToSell, oilToSell
 
 if __name__ == '__main__':
 

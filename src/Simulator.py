@@ -27,6 +27,8 @@ class Simulator(object):
 
 	def __init__(self, maxRigsInUse=10):
 		self.maxRigsInUse = maxRigsInUse
+		self.bruteCost = 0
+		self.bruteEarnings = 0
 
 	def createRandomExtractionArea(self, aReservoir):
 		landLotList = [self.createRandomLandLot() for _ in range(random.randint(10, 100))]
@@ -114,6 +116,15 @@ class Simulator(object):
 		totalExtraction = self.getTotalExtraction()
 		self.extractionArea.reservoir.currentSize -= totalExtraction
 
+	def distributeExtractedProduct(self, totalExtraction):
+		pass
+
+	def distributeRefinedProduct(self):
+		pass
+
+	def extractGasFromTanks(self):
+		pass
+
 	def startSimulation(self):
 
 		# reservoir parameters (parametrize later?)
@@ -121,6 +132,9 @@ class Simulator(object):
 		gasComposition = 0.2
 		petrolComposition = 0.6
 		reinjectionLimit = random.random()*200
+
+		gasPrice = random.random()
+		oilPrice = random.random()
 
 		reservoir = Reservoir(sizeInCubicMeters, gasComposition, petrolComposition, reinjectionLimit)
 		self.extractionArea = self.createRandomExtractionArea(reservoir)
@@ -133,15 +147,44 @@ class Simulator(object):
 
 		currentTime = 0
 		while engineer.decidesToKeepExtractingProduct(self.extractionArea, currentTime):
+
+			# calculate extraction of previous period
+			totalExtraction = self.getTotalExtraction()
+
+			# first we need to distribute the refined product, so it doesnt mix up with the extracted product
+			self.distributeRefinedProduct()
+			self.distributeExtractedProductBetweenRefinieries(totalExtraction)
+
+			# once the extraction/reinjection occurs, update reservoir size and oil rig pressures.
+			self.updateReservoirSize()
+			self.updateOilRigPressures()
+
+			# now the engineer starts to make decitions based on the current state of the extractionArea
+			# drilling rigs
 			newDrillingRigs = engineer.decidesNewDrillingRigs(extractionArea, availableRigs)
 			pickedRigsToEnable = engineer.picksRigsToEnable(extractionArea, availableRigs, self.maxRigsInUse)
-			self.placeNewDrillingRigs(newDrillingRigs)
+			cost = self.placeNewDrillingRigs(newDrillingRigs)
+			self.bruteCost += cost
 			self.setEnabledRigs(pickedRigsToEnable)
-			self.getTotalExtraction()
-			self.updateReservoirSize()
-			engineer.decidesReinjection()
-			self.updateOilRigPressures()
+
+			# storage tanks
+			newGasTanks, newWaterTanks = engineer.decidesNewStorageTanks(extractionArea, availableTanks)
+			cost = self.placeNewTanks(newGasTanks, newWaterTanks)
+			self.bruteCost += cost
+
+			gasToSell, oilToSell = engineer.decidesToSell()
+			self.extractGasFromTanks(gasToSell)
+			self.bruteEarnings = gasToSell * gasPrice
+			self.bruteEarnings = oilToSell * oilPrice
+
+			waterVolumeToReinject, gasVolumeToReinject = engineer.decidesReinjection()
+			reservoir.reinject(waterVolumeToReinject, gasVolumeToReinject)
+
 			currentTime += 1
+
+		print 'Total cost: {}'.format(self.bruteCost)
+		print 'Total earnings: {}'.format(self.bruteEarnings)
+		print 'Net earnings: {}'.format(self.bruteEarnings - self.bruteCost)	
 
 
 if __name__ == '__main__':
