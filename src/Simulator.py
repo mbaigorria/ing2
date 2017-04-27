@@ -116,6 +116,44 @@ class Simulator(object):
 		totalExtraction = self.getTotalExtraction()
 		self.extractionArea.reservoir.currentSize -= totalExtraction
 
+	def reinjectReservoir(self, waterVolume, gasVolume, reinjectionLimit):
+
+		if waterVolume + gasVolume > reinjectionLimit:
+			print 'Error: you cannot reinject more than the reinjection limit.'
+			exit()
+
+		waterStored, waterCapacity, gasStored, gasCapacity = self.extractionArea.storageStatus()
+		
+		if gasVolume > gasStored:
+			print 'Error: you cannot reinject more gas than the one stored in the storage tanks.'
+
+		waterPurchased = 0
+		if waterVolume > waterStored:
+			# water must be purchased. you can also make an error and force the engineer to buy
+			# the water previously.
+			waterPurchased = waterVolume - waterStored
+			# method here to purchase water in simulator and consider the cost.
+
+		# update water and gas volumes in tanks.
+		self.extractFromStorage(waterVolume-waterPurchased, gasVolume)
+
+		reservoir.reinject(waterVolumeToReinject, gasVolumeToReinject)
+
+
+	def extractFromStorage(self, waterVolume, gasVolume):
+		extractedWater = self.extract(waterVolume, self.extractionArea.waterTanks)
+		extractedGas   = self.extract(gasVolume, self.extractionArea.gasTanks)
+		return extractedWater, extractedGas
+
+	def extract(self, volume, tankList):
+		extractedSoFar = 0
+		for t in tankList:
+			extracted = min(t.volumeStored, volume - extractedSoFar)
+			extractedSoFar += extracted
+			t.extract(extracted)
+			if extractedSoFar == volume: break
+		return extractedSoFar
+
 	def distributeExtractedProduct(self, totalExtraction):
 		pass
 
@@ -178,7 +216,8 @@ class Simulator(object):
 			self.bruteEarnings = oilToSell * oilPrice
 
 			waterVolumeToReinject, gasVolumeToReinject = engineer.decidesReinjection()
-			reservoir.reinject(waterVolumeToReinject, gasVolumeToReinject)
+
+			self.reinjectReservoir(waterVolumeToReinject, gasVolumeToReinject, reinjectionLimit)
 
 			currentTime += 1
 

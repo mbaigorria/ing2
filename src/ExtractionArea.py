@@ -44,6 +44,22 @@ class ExtractionArea(object):
 				enabledCount += lot.oilRig.isEnabled
 		return enabledCount
 
+	def storageStatus(self):
+		waterStored = 0
+		waterCapacity = 0
+
+		gasStored = 0
+		gasCapacity = 0
+
+		for t in waterTanks:
+			waterStored += t.volumeStored
+			waterCapacity += t.storageCapacity
+			
+		for t in gasTanks:
+			gasStored += t.volumeStored
+			gasCapacity += t.storageCapacity
+
+		return waterStored, waterCapacity, gasStored, gasCapacity
 
 if __name__ == '__main__':
 
