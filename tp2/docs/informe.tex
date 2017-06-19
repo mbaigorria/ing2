@@ -39,9 +39,9 @@
  top=30mm,
  bottom=30mm,
  }
- 
+
 \usepackage{booktabs}
- 
+
 % sql stuff
 \usepackage{listings}
 \usepackage{courier}
@@ -83,7 +83,7 @@
     \fi
   \fi
   %override by keyword style if a keyword is detected!
-  \lsthk@DetectKeywords% 
+  \lsthk@DetectKeywords%
 }
 
 % reset the switch at the end of line
@@ -93,15 +93,15 @@
 \newtheorem{theorem}{Teorema}[section]
 \newtheorem{corollary}{Corolario}[theorem]
 \newtheorem{lemma}{Lema}[theorem]
- 
+
 \theoremstyle{definition}
 \newtheorem{definition}{Definición}[section]
- 
+
 \theoremstyle{remark}
 \newtheorem*{remark}{Observación}
 
 \usepackage[dvipsnames]{xcolor}
- 
+
 \begin{document}
 % Estos comandos deben ir antes del \maketitle
 \materia{Ingeniería de Software II} % obligatorio
@@ -115,7 +115,7 @@
 \integrante{Mauro Cherubini}{835/13}{cheru.mf@gmail.com}
 \integrante{Mario Ezequiel Ginsberg}{145/14}{ezequielginsberg@gmail.com}
 \integrante{Martin Baigorria}{575/14}{martinbaigorria@gmail.com}
- 
+
 \maketitle
 
 \tableofcontents
@@ -242,127 +242,166 @@ Luego del Quality Attribute Workshop (QAW), la priorización de los atributos de
 
 Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo a lo relevado.
 
-\textbf{Performance}:
+\subsubsection{Performance}
 
-Descripción: La búsqueda de eventos en el sistema debe tardar a lo sumo medio segundo.
-Fuente: Auditor.
-Estímulo: Escribe en el buscador el evento a buscar y aprieta el botón Buscar.
-Artefacto: Sistema de Informes de Eventos.
-Entorno: Normal.
-Respuesta: Se obtienen los datos del evento buscado. Si la búsqueda es idéntica a otra realizada hace menos de 1 hora, la respuesta llegará más rápido.
-Medición: El sistema responderá la búsqueda en menos de 100 ms en el caso de una búsqueda repetida recientemente, y en menos de 500 ms en cualquier otro caso.
+1)
+\begin{itemize}
+  \item Descripción: La búsqueda de eventos en el sistema debe tardar a lo sumo medio segundo.
+  \item Fuente: Auditor.
+  \item Estímulo: Escribe en el buscador el evento a buscar y aprieta el botón Buscar.
+  \item Artefacto: Sistema de Informes de Eventos.
+  \item Entorno: Normal.
+  \item Respuesta: Se obtienen los datos del evento buscado. Si la búsqueda es idéntica a otra realizada hace menos de 1 hora, la respuesta llegará más rápido.
+  \item Medición: El sistema responderá la búsqueda en menos de 100 ms en el caso de una búsqueda repetida recientemente, y en menos de 500 ms en cualquier otro caso.
+\end{itemize}
 
-Descripción: La limpieza de datos deberá remover aproximadamente el 80\% de los picos no realistas del conjunto de datos.
-Fuente: Interna. % ó Ingeniero 
-Estímulo: Llegan nuevos datos a ser limpiados de datos no realistas. % ó Selecciona el conjunto de datos a limpiar y aprieta el botón Limpiar.
-Artefacto: Sistema de Procesamiento de Mediciones. % ó Sistema de Monitoreo y Control.
-Entorno: Normal.
-Respuesta: El sistema realiza la limpieza de datos correctamente.
-Medición: Aproximadamente el 80\% de los picos fuera de los límites superior e inferior fueron eliminados del conjunto de datos.
+2)
+\begin{itemize}
+  \item Descripción: La limpieza de datos deberá remover aproximadamente el 80\% de los picos no realistas del conjunto de datos.
+  \item Fuente: Interna. % ó Ingeniero
+  \item Estímulo: Llegan nuevos datos a ser limpiados de datos no realistas. % ó Selecciona el conjunto de datos a limpiar y  \item aprieta el botón Limpiar.
+  \item Artefacto: Sistema de Procesamiento de Mediciones. % ó Sistema de Monitoreo y Control.
+  \item Entorno: Normal.
+  \item Respuesta: El sistema realiza la limpieza de datos correctamente.
+  \item Medición: Aproximadamente el 80\% de los picos fuera de los límites superior e inferior fueron eliminados del conjunto de datos.
+\end{itemize}
 
-Descripción: La detección de anomalías no debe tardar más de 5 minutos.
-Fuente: Interna.
-Estímulo: Llegan nuevos datos anómalos a ser analizados.
-Artefacto: Detector de Anomalías.
-Entorno: Normal.
-Respuesta: Se detectan las anomalías y se da aviso al Gestor de Anomalías.
-Medición: Las anomalías son detectadas en menos de 5 minutos.
+3)
+\begin{itemize}
+  \item Descripción: La detección de anomalías no debe tardar más de 5 minutos.
+  \item Fuente: Interna.
+  \item Estímulo: Llegan nuevos datos anómalos a ser analizados.
+  \item Artefacto: Detector de Anomalías.
+  \item Entorno: Normal.
+  \item Respuesta: Se detectan las anomalías y se da aviso al Gestor de Anomalías.
+  \item Medición: Las anomalías son detectadas en menos de 5 minutos.
+\end{itemize}
 
-Descripción: Ante un pronóstico catastrófico, la alarma debe ser envíada inmediatamente.
-Fuente: Interna.
-Estímulo: Evento catastrófico detectado por el módulo Detector de Anomalías.
-Artefacto: Gestor de Anomalías.
-Entorno: Normal.
-Respuesta: Envío inmediato de SMS al Jefe de Operaciones del yacimiento.
-Medición: El SMS se envía en menos de 50 ms.
+4)
+\begin{itemize}
+  \item Descripción: Ante un pronóstico catastrófico, la alarma debe ser envíada inmediatamente.
+  \item Fuente: Interna.
+  \item Estímulo: Evento catastrófico detectado por el módulo Detector de Anomalías.
+  \item Artefacto: Gestor de Anomalías.
+  \item Entorno: Normal.
+  \item Respuesta: Envío inmediato de SMS al Jefe de Operaciones del yacimiento.
+  \item Medición: El SMS se envía en menos de 50 ms.
+\end{itemize}
 
-\textbf{Disponibilidad}:
+\subsubsection{Disponibilidad}
 
-Descripción: El sistema de procesamiento de mediciones debe estar en funcionamiento todo el tiempo para garantizar la mayor efectividad de detección de catástrofes.
-Fuente: Interna.
-Estímulo: Llegan datos a ser analizados.
-Artefacto: Sistema de Procesamiento de Mediciones.
-Entorno: Degradado.
-Respuesta: El sistema envía los datos a otra instancia de procesamiento de mediciones.
-Medición: En el 99.99999999\% de los casos los datos se procesaron correctamente.
+1)
+\begin{itemize}
+  \item Descripción: El sistema de procesamiento de mediciones debe estar en funcionamiento todo el tiempo para garantizar la mayor efectividad de detección de catástrofes.
+  \item Fuente: Interna.
+  \item Estímulo: Llegan datos a ser analizados.
+  \item Artefacto: Sistema de Procesamiento de Mediciones.
+  \item Entorno: Degradado.
+  \item Respuesta: El sistema envía los datos a otra instancia de procesamiento de mediciones.
+  \item Medición: En el 99.99999999\% de los casos los datos se procesaron correctamente.
+\end{itemize}
 
-Descripción: El formulario de eventos debe estar disponible en todo momento para el Ministerio y para el Ente Regulador de Seguridad Medio Ambiental.
-Fuente: Externa.
-Estímulo: Petición para visualizar el formulario de eventos.
-Artefacto: Sistema de Informes de Eventos.
-Entorno: Degradado.
-Respuesta: El balanceador de carga asigna otro sistema de informes de eventos para realizar la petición.
-Medición: En el 99.99999999\% de los casos los datos se visualizaron correctamente.
+2)
+\begin{itemize}
+  \item Descripción: El formulario de eventos debe estar disponible en todo momento para el Ministerio y para el Ente Regulador de Seguridad Medio Ambiental.
+  \item Fuente: Externa.
+  \item Estímulo: Petición para visualizar el formulario de eventos.
+  \item Artefacto: Sistema de Informes de Eventos.
+  \item Entorno: Degradado.
+  \item Respuesta: El balanceador de carga asigna otro sistema de informes de eventos para realizar la petición.
+  \item Medición: En el 99.99999999\% de los casos los datos se visualizaron correctamente.
+\end{itemize}
 
-Descripción: El sistema en su totalidad debe ser tolerante a fallas.
-Fuente: Interna.
-Estímulo: Un módulo del sistema deja de funcionar.
-Artefacto: Sistema.
-Entorno: Normal.
-Respuesta: El sistema omite el módulo degradado.
-Medición: El sistema sigue en funcionamiento.
+3)
+\begin{itemize}
+  \item Descripción: El sistema en su totalidad debe ser tolerante a fallas.
+  \item Fuente: Interna.
+  \item Estímulo: Un módulo del sistema deja de funcionar.
+  \item Artefacto: Sistema.
+  \item Entorno: Normal.
+  \item Respuesta: El sistema omite el módulo degradado.
+  \item Medición: El sistema sigue en funcionamiento.
+\end{itemize}
 
-Descripción: El servicio de envío de SMS debe estar siempre en funcionamiento.
-Fuente: Externa.
-Estímulo: Se recibe un mensaje de error de envío de SMS.
-Artefacto: Gestor de Anomalías.
-Entorno: Normal.
-Respuesta: Se envía nuevamente el SMS por otro canal de envío de SMS.
-Medición: Se recibe una confirmación de envío del mensaje en menos de 1 minuto.
+4)
+\begin{itemize}
+  \item Descripción: El servicio de envío de SMS debe estar siempre en funcionamiento.
+  \item Fuente: Externa.
+  \item Estímulo: Se recibe un mensaje de error de envío de SMS.
+  \item Artefacto: Gestor de Anomalías.
+  \item Entorno: Normal.
+  \item Respuesta: Se envía nuevamente el SMS por otro canal de envío de SMS.
+  \item Medición: Se recibe una confirmación de envío del mensaje en menos de 1 minuto.
+\end{itemize}
 
-Descripción: En caso de siniestro, todos los registros deben mantenerse accesibles.
-Fuente: Interna.
-Estímulo: Se desea acceder a un registro.
-Artefacto: Gestor de Anomalías.
-Entorno: Degradado.
-Respuesta: El sistema redirige la petición al Gestor de Backups.
-Medición: Los datos son obtenidos en el 99.99999999\% de las veces.
+5)
+\begin{itemize}
+  \item Descripción: En caso de siniestro, todos los registros deben mantenerse accesibles.
+  \item Fuente: Interna.
+  \item Estímulo: Se desea acceder a un registro.
+  \item Artefacto: Gestor de Anomalías.
+  \item Entorno: Degradado.
+  \item Respuesta: El sistema redirige la petición al Gestor de Backups.
+  \item Medición: Los datos son obtenidos en el 99.99999999\% de las veces.
+\end{itemize}
 
-\textbf{Seguridad}:
+\subsubsection{Seguridad}
+1)
+\begin{itemize}
+  \item Descripción: La autenticación de los usuarios debe ser segura.
+  \item Fuente: Agente Externo.
+  \item Estímulo: Un agente externo intenta interceptar los datos de un usuario cuando son enviados al sistema para el logueo en el mismo.
+  \item Artefacto: Sistema de Usuarios.
+  \item Entorno: Normal.
+  \item Respuesta: Los datos se envían de forma segura.
+  \item Medición: Debido al método de seguridad usado para enviar los datos, en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.
+\end{itemize}
 
-Descripción: La autenticación de los usuarios debe ser segura.
-Fuente: Agente Externo.
-Estímulo: Un agente externo intenta interceptar los datos de un usuario cuando son enviados al sistema para el logueo en el mismo.
-Artefacto: Sistema de Usuarios.
-Entorno: Normal.
-Respuesta: Los datos se envían de forma segura.
-Medición: Debido al método de seguridad usado para enviar los datos, en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.
+2)
+\begin{itemize}
+  \item Descripción: Los datos de los servicios externos se deben recibir de forma segura.
+  \item Fuente: Agente Externo.
+  \item Estímulo: Un agente externo intenta interceptar los datos de los servicios externos cuando son enviados al sistema para  el procesamiento de los mismos.
+  \item Artefacto: Controlador de válvula semiautomática.
+  \item Entorno: Normal.
+  \item Respuesta: Los datos son recibidos de forma segura.
+  \item Medición: Debido al método de seguridad usado para enviar los datos, en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.
+\end{itemize}
 
-Descripción: Los datos de los servicios externos se deben recibir de forma segura.
-Fuente: Agente Externo.
-Estímulo: Un agente externo intenta interceptar los datos de los servicios externos cuando son enviados al sistema para el procesamiento de los mismos.
-Artefacto: Controlador de válvula semiautomática.
-Entorno: Normal.
-Respuesta: Los datos son recibidos de forma segura.
-Medición: Debido al método de seguridad usado para enviar los datos, en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.
+3)
+\begin{itemize}
+  \item Descripción: Un determinado perfil de usuario sólo puede ejecutar las acciones permitidas por dicho perfil.
+  \item Fuente: Usuario. %Ingeniero. (pongo un ejemplo concreto, pero serviría para cualquier rol que intente hacer algo que no debería, no sé si está bien con esa descripción general poner roles particulares)
+  \item Estímulo: Intenta realizar una acción para la cual no está autorizado su perfil.
+  \item Artefacto: Sistema.
+  \item Entorno: Normal.
+  \item Respuesta: El sistema invalida la acción y muestra un mensaje de error indicando la incompatibilidad de la acción con el perfil del usuario.
+  \item Medición: En el 99.99999999\% de las veces la acción no va a ser permitida por el sistema.
+\end{itemize}
 
-Descripción: Un determinado perfil de usuario sólo puede ejecutar las acciones permitidas por dicho perfil.
-Fuente: Usuario. %Ingeniero. (pongo un ejemplo concreto, pero serviría para cualquier rol que intente hacer algo que no debería, no sé si está bien con esa descripción general poner roles particulares)
-Estímulo: Intenta realizar una acción para la cual no está autorizado su perfil.
-Artefacto: Sistema.
-Entorno: Normal.
-Respuesta: El sistema invalida la acción y muestra un mensaje de error indicando la incompatibilidad de la acción con el perfil del usuario.
-Medición: En el 99.99999999\% de las veces la acción no va a ser permitida por el sistema.
+\subsubsection{Usabilidad}
+1)
+\begin{itemize}
+  \item Descripción: El sistema debe ser fácil de aprendera usar y agradable a la vista.
+  \item Fuente: Usuario.
+  \item Estímulo: Interactúa con el sistema.
+  \item Artefacto: Interfaz de Usuario.
+  \item Entorno: Ejecución.
+  \item Respuesta: Responde con mensajes claros y precisos, y muestra de forma simple y elegante las distintas acciones posibles dentro del sistema.
+  \item Medición: Cualquier usuario debe poder aprender a usar el sistema en menos de 10 minutos.
+\end{itemize}
 
-\textbf{Usabilidad}:
-
-Descripción: El sistema debe ser fácil de aprendera usar y agradable a la vista.
-Fuente: Usuario.
-Estímulo: Interactúa con el sistema.
-Artefacto: Interfaz de Usuario.
-Entorno: Ejecución.
-Respuesta: Responde con mensajes claros y precisos, y muestra de forma simple y elegante las distintas acciones posibles dentro del sistema.
-Medición: Cualquier usuario debe poder aprender a usar el sistema en menos de 10 minutos.
-
-\textbf{Modificabilidad}:
-
-Descripción: El sistema debe poder permitir el agregado de nuevos procesos para trabajar con los datos almacenados sin mucha dificultad.
-Fuente: Desarrollador.
-Estímulo: Quiere agregar un nuevo proceso.
-Artefacto: Sistema.
-Entorno: En diseño.
-Respuesta: Se realizan los cambios sin afectar las otras funcionalidades.
-Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
+\subsubsection{Modificabilidad}
+1)
+\begin{itemize}
+  \item Descripción: El sistema debe poder permitir el agregado de nuevos procesos para trabajar con los datos almacenados sin mucha dificultad.
+  \item Fuente: Desarrollador.
+  \item Estímulo: Quiere agregar un nuevo proceso.
+  \item Artefacto: Sistema.
+  \item Entorno: En diseño.
+  \item Respuesta: Se realizan los cambios sin afectar las otras funcionalidades.
+  \item Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
+\end{itemize}
 
 \pagebreak
 
@@ -373,7 +412,7 @@ Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
 		\includegraphics[scale=0.8]{figures/architecture.png}
-	}	
+	}
 	\caption{Diagrama general de la arquitectura del sistema ARS de supervision automatica de yacimientos.}
 \end{figure}
 
@@ -382,7 +421,7 @@ Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
 		\includegraphics[scale=0.8]{figures/ProcesadorDeMediciones.png}
-	}	
+	}
 	\caption{Diagrama de arquitectura de procesamiento de mediciones.}
 \end{figure}
 
@@ -391,7 +430,7 @@ Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
 		\includegraphics[scale=0.8]{figures/DetectorDeAnomalias.png}
-	}	
+	}
 	\caption{Diagrama de arquitectura del detector de anomalias.}
 \end{figure}
 
@@ -400,7 +439,7 @@ Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
 		\includegraphics[scale=0.8]{figures/GestorDeAnomalias.png}
-	}	
+	}
 	\caption{Diagrama de arquitectura del gestor de mediciones.}
 \end{figure}
 
