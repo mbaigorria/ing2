@@ -231,6 +231,128 @@ En esta seccion identificaremos los tres casos de uso principales y los especifi
 
 \section{Atributos de calidad}
 
+Luego del Quality Attribute Workshop (QAW), la priorización de los atributos de calidad fue la siguiente:
+\begin{itemize}
+  \item Performance
+  \item Disponibilidad
+  \item Seguridad
+  \item Usabilidad
+  %\item Modificabilidad
+\end{itemize}
+
+Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo a lo relevado.
+
+\textbf{Performance}:
+
+Descripción: La búsqueda de eventos en el sistema debe tardar a lo sumo medio segundo.
+Fuente: Auditor.
+Estímulo: Escribe en el buscador el evento a buscar y aprieta el botón Buscar.
+Artefacto: Sistema de Informes de Eventos.
+Entorno: Normal.
+Respuesta: Se obtienen los datos del evento buscado. Si la búsqueda es idéntica a otra realizada hace menos de 1 hora, la respuesta llegará más rápido.
+Medición: El sistema responderá la búsqueda en menos de 100 ms en el caso de una búsqueda repetida recientemente, y en menos de 500 ms en cualquier otro caso.
+
+Descripción: La limpieza de datos deberá remover aproximadamente el 80\% de los picos no realistas del conjunto de datos.
+Fuente: 1) Ingeniero ó 2) Interna.
+Estímulo: 1) Selecciona el conjunto de datos a limpiar y aprieta el botón Limpiar ó 2) Llegan nuevos datos a ser limpiados de datos no realistas.
+Artefacto: 1) Sistema de Monitoreo y Control ó 2) Sistema de Procesamiento de Mediciones.
+Entorno: Normal.
+Respuesta: El sistema realiza la limpieza de datos correctamente.
+Medición: Aproximadamente el 80\% de los picos fuera de los límites superior e inferior fueron eliminados del conjunto de datos.
+
+Descripción: La detección de anomalías no debe tardar más de 5 minutos.
+Fuente: Interna.
+Estímulo: Llegan nuevos datos anómalos a ser analizados.
+Artefacto: Detector de Anomalías.
+Entorno: Normal.
+Respuesta: Se detectan las anomalías y se da aviso al Gestor de Anomalías.
+Medición: Las anomalías son detectadas en menos de 5 minutos.
+
+Descripción: Ante un pronóstico catastrófico, la alarma debe ser envíada inmediatamente.
+Fuente: Interna.
+Estímulo: Evento catastrófico detectado por el módulo Detector de Anomalías.
+Artefacto: Gestor de Anomalías.
+Entorno: Normal.
+Respuesta: Envío inmediato de SMS al Jefe de Operaciones del yacimiento.
+Medición: El SMS se envía en menos de 50 ms.
+
+\textbf{Disponibilidad}:
+
+Descripción: Los sistemas de procesamiento de mediciones, detección de anomalías y gestor de anomalías deben estar en funcionamiento todo el tiempo para garantizar la mayor efectividad de detección de catástrofes.
+Fuente: Interna.
+Estímulo: Llegan datos a ser analizados.
+Artefacto: \textbf{COMPLETAR}
+
+Descripción: El formulario de eventos debe estar disponible en todo momento para el Ministerio y para el Ente Regulador de Seguridad Medio Ambiental.
+Fuente: Externa.
+Estímulo: Petición para visualizar el formulario de eventos.
+Artefacto: Sistema de Informes de Eventos.
+Entorno: Degradado.
+Respuesta: \textbf{COMPLETAR}
+
+Descripción: El sistema en su totalidad debe ser tolerante a fallas.
+Fuente: Interna.
+Estímulo: Un módulo del sistema deja de funcionar.
+Artefacto: Sistema.
+Entorno: Normal.
+Respuesta: El sistema omite el módulo degradado.
+Medición: El sistema sigue en funcionamiento.
+
+Descripción: El servicio de envío de SMS debe estar siempre en funcionamiento.
+Fuente: Externa.
+Estímulo: Se recibe un mensaje de error de envío de SMS.
+Artefacto: Gestor de Anomalías.
+Entorno: Normal.
+Respuesta: Se envía nuevamente el SMS por otro canal de envío de SMS.
+
+(HACER UN ESCENARIO EN EL QUE SE USE EL BACK UP CUANDO NO FUNCIONE EL REPO DONDE ESTAN LOS ORIGINALES, CREO QUE VA EN DISPONIBILIDAD)
+
+\textbf{Seguridad}:
+
+Descripción: La autenticación de los usuarios debe ser segura.
+Fuente: Agente Externo.
+Estímulo: Un agente externo intenta interceptar los datos de un usuario cuando son enviados al sistema para el logueo en el mismo.
+Artefacto: Sistema de Usuarios.
+Entorno: Normal.
+Respuesta: Los datos se envían de forma segura.
+Medición: Debido al método de seguridad usado para enviar los datos, al agente externo le llevará mas de 1000 años descifrar los datos. (o poner algo más testeable, como "en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.")
+
+Descripción: Los datos de los servicios externos se deben recibir de forma segura.
+Fuente: Agente Externo.
+Estímulo: Un agente externo intenta interceptar los datos de los servicios externos cuando son enviados al sistema para el procesamiento de los mismos.
+Artefacto: Controlador de válvula semiautomática.
+Entorno: Normal.
+Respuesta: Los datos son recibidos de forma segura.
+Medición: Debido al método de seguridad usado para enviar los datos, al agente externo le llevará mas de 1000 años descifrar los datos. (o poner algo más testeable, como "en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.")
+
+Descripción: Un determinado perfil de usuario sólo puede ejecutar las acciones permitidas por dicho perfil.
+Fuente: Usuario. %Ingeniero. (pongo un ejemplo concreto, pero serviría para cualquier rol que intente hacer algo que no debería, no sé si está bien con esa descripción general poner roles particulares)
+Estímulo: Intenta realizar una acción para la cual no está autorizado su perfil.
+Artefacto: Sistema.
+Entorno: Normal.
+Respuesta: El sistema invalida la acción y muestra un mensaje de error indicando la incompatibilidad de la acción con el perfil del usuario.
+Medición: En el 99.99999999\% de las veces la acción no va a ser permitida por el sistema.
+
+\textbf{Usabilidad}:
+
+Descripción: El sistema debe ser fácil de aprendera usar y agradable a la vista.
+Fuente: Usuario.
+Estímulo: Interactúa con el sistema.
+Artefacto: Interfaz de Usuario.
+Entorno: Ejecución.
+Respuesta: Responde con mensajes claros y precisos, y muestra de forma simple y elegante las distintas acciones posibles dentro del sistema.
+Medición: Cualquier usuario debe poder aprender a usar el sistema en menos de 10 minutos.
+
+%\textbf{Modificabilidad}:
+
+%Descripción: El sistema debe poder permitir el agregado de nuevos procesos para trabajar con los datos almacenados sin mucha dificultad.
+%Fuente: Desarrollador.
+%Estímulo: Quiere agregar un nuevo proceso.
+%Artefacto: Sistema.
+%Entorno: En diseño.
+%Respuesta: Se realizan los cambios sin afectar las otras funcionalidades.
+%Medición: Se agregó el nuevo proceso modificando sólo 2 módulos.
+
 \pagebreak
 
 \section{Arquitectura}
