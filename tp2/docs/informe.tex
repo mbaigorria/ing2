@@ -126,11 +126,106 @@
 
 \subsection{Diagrama}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/casosuso.png}
+    \caption{Diagrama de casos de uso}
+    \label{fig:casosuso}
+\end{figure}
+
 \subsection{Descripcion}
+
+\begin{enumerate}
+    \item \textbf{Autenticarse}: La primera acción que tiene que realizar cualquier usuario, no importe su perfil, para poder seguir interactuando con el sistema con los permisos que tenga su perfil.
+    \item \textbf{Registrar usuario}: La forma que tiene el administrador de ingresar un nuevo usuario al sistema, indicando el perfil que va a utilizar.
+    \item \textbf{Remover usuario}: El administrador le saca el acceso al sistema a un usuario en particular.
+    \item \textbf{Consultar usuarios actuales}: El administrador lista los usuarios actuales.
+    \item \textbf{Registrar pozo}: De esta forma el ingeniero hace que el sistema considere un nuevo pozo en su procesamiento y lo agregue al simulador de simoil entre otras cosas.
+    \item \textbf{Registrar sensor de pozo}: El ingeniero registra un nuevo sensor indicando el pozo al que pertenece para que el sistema sepa a que pozo pertenece.
+    \item \textbf{Registrar válvula semiautomática}: El ingeniero registra una nueva válvula semiautomática indicando el pozo al que pertenece y su función.
+    \item \textbf{Modificar rangos de sistema ARS}: Se modifican los rangos de limpieza de datos.
+    \item \textbf{Consultar estado actual o pasado de los pozos}: Para consultar una historia de los valores de los sensores, posiciones de las válvulas y estados de alerta para cada pozo.
+    \item \textbf{Consultar formulario de informes}: Se listan los informes detallados de eventos detectados por el sistema.
+    \item \textbf{Consultar alarmas activas}: De esta forma el jefe de operaciones tiene acceso a las alarmas activas.
+    \item \textbf{Indicar falsa alarma}: El jefe de operaciones cierra una alarma indicando que fue falsa alarma.
+    \item \textbf{Indicar acción correctiva tomada}: El jefe de operaciones cierra una alarma indicando la acción correctiva tomada.
+\end{enumerate}
 
 \subsection{Especificacion}
 
+\newcommand{\curef}[1]{\textbf{Caso de uso \ref{cu:#1}}}
+\newcommand{\cutitle}[1]{\renewcommand{\givencutitle}{#1}}
+\newcommand{\cuactors}[1]{\renewcommand{\givencuactors}{#1}}
+\newcommand{\cupre}[1]{\renewcommand{\givencupre}{#1}}
+\newcommand{\cupost}[1]{\renewcommand{\givencupost}{#1}}
+\newcommand{\cucourse}[1]{\renewcommand{\givencucourse}{#1}}
+\newcommand{\culabel}[1]{\renewcommand{\givenculabel}{#1}}
+\newcommand{\cucaption}[1]{\renewcommand{\givencucaption}{#1}}
+\newcommand{\givencutitle}{REQUIRED!}
+\newcommand{\givencuactors}{REQUIRED!}
+\newcommand{\givencupre}{-}
+\newcommand{\givencupost}{-}
+\newcommand{\givencucourse}{REQUIRED!}
+\newcommand{\givenculabel}{REQUIRED!}
+\newcommand{\givencucaption}{} % optional
+
+\newenvironment{casodeuso}
+{\begin{table}[H]}{%
+\begin{tabular}{|p{0.5\linewidth} p{0.5\linewidth}|}\hline
+\multicolumn{2}{|l|}{\textbf{Caso de Uso: \givencutitle}} \\
+\vspace{1px}\textbf{Curso Normal} & \vspace{1px}\textbf{Curso Alternativo} \\
+\givencucourse
+\hline
+\end{tabular}
+\label{cu:\givenculabel}
+\end{table}}
+
 En esta seccion identificaremos los tres casos de uso principales y los especificaremos en detalle utilizando la tabla de curso normal/alternativo.
+
+\begin{casodeuso}
+  \cutitle{Registrar válvula semiautomática}
+  \cucourse{
+    1. El ingeniero selecciona la opción de ingresar una válvula & \\
+    2. El sistema carga el listado de pozos actuales y sus válvulas \\
+    3. El ingeniero selecciona un pozo al que corresponde la válvula & \\
+    4. El sistema carga el listado de tipos de válvula & \\
+    5. El ingeniero selecciona que tipo de válvula a ingresar & 5.1. La válvula del tipo seleccionado ya fue ingresada para ese pozo. Vuelve a 5. \\
+    6. El ingeniero confirma selección & \\
+    7. El sistema persiste la válvula & \\
+    8. El sistema informa éxito de operación & \\
+    9. Fin del caso & \\
+  }
+  \culabel{regval}
+\end{casodeuso}
+
+\begin{casodeuso}
+  \cutitle{Indicar acción correctiva tomada}
+  \cucourse{
+    1. El jefe de operaciones selecciona la opción de indicar acción correctiva para la alarma seleccionada en la lista de alarmas activas & \\
+    2. El sistema carga en detalle la alarma seleccionada & \\
+    3. El jefe de operaciones indica de forma detallada la acción tomada & \\
+    4. El jefe de operaciones confirma la operación & 4.1 Descripción es muy corta, vuelve a 3\\
+    5. El sistema persiste la acción & \\
+    6. El sistema completa el informe de la alarma & \\
+    7. Fin del caso & \\
+  }
+  \culabel{indacc}
+\end{casodeuso}
+
+\begin{casodeuso}
+  \cutitle{Consultar estado actual o pasado de los pozos}
+  \cucourse{
+    1. El usuario selecciona la opción de listar los pozos & \\
+    2. El sistema lista los pozos & \\
+    3. El usuario selecciona el pozo a consultar & \\
+    4. El sistema encuentra los registros de estados de válvulas para ese pozo & \\
+    5. El sistema encuentra los registros de estados de sensores para ese pozo & \\
+    6. El sistema encuentra los registros de alertas para ese pozo & \\
+    7. El sistema muestra de forma detallada el historial y el estado actual de este pozo & \\
+    8. Fin del caso & \\
+  }
+  \culabel{estact}
+\end{casodeuso}
 
 \pagebreak
 
