@@ -36,8 +36,8 @@
  total={210mm,297mm},
  left=30mm,
  right=30mm,
- top=30mm,
- bottom=30mm,
+ top=20mm,
+ bottom=20mm,
  }
 
 \usepackage{booktabs}
@@ -133,22 +133,22 @@
     \label{fig:casosuso}
 \end{figure}
 
-\subsection{Descripcion}
+\subsection{Descripción}
 
 \begin{enumerate}
-    \item \textbf{Autenticarse}: La primera acción que tiene que realizar cualquier usuario, no importe su perfil, para poder seguir interactuando con el sistema con los permisos que tenga su perfil.
-    \item \textbf{Registrar usuario}: La forma que tiene el administrador de ingresar un nuevo usuario al sistema, indicando el perfil que va a utilizar.
-    \item \textbf{Remover usuario}: El administrador le saca el acceso al sistema a un usuario en particular.
-    \item \textbf{Consultar usuarios actuales}: El administrador lista los usuarios actuales.
-    \item \textbf{Registrar pozo}: De esta forma el ingeniero hace que el sistema considere un nuevo pozo en su procesamiento y lo agregue al simulador de simoil entre otras cosas.
-    \item \textbf{Registrar sensor de pozo}: El ingeniero registra un nuevo sensor indicando el pozo al que pertenece para que el sistema sepa a que pozo pertenece.
-    \item \textbf{Registrar válvula semiautomática}: El ingeniero registra una nueva válvula semiautomática indicando el pozo al que pertenece y su función.
-    \item \textbf{Modificar rangos de sistema ARS}: Se modifican los rangos de limpieza de datos.
-    \item \textbf{Consultar estado actual o pasado de los pozos}: Para consultar una historia de los valores de los sensores, posiciones de las válvulas y estados de alerta para cada pozo.
-    \item \textbf{Consultar formulario de informes}: Se listan los informes detallados de eventos detectados por el sistema.
-    \item \textbf{Consultar alarmas activas}: De esta forma el jefe de operaciones tiene acceso a las alarmas activas.
-    \item \textbf{Indicar falsa alarma}: El jefe de operaciones cierra una alarma indicando que fue falsa alarma.
-    \item \textbf{Indicar acción correctiva tomada}: El jefe de operaciones cierra una alarma indicando la acción correctiva tomada.
+    \item \textbf{Autenticándose}: La primera acción que tiene que realizar cualquier usuario, no importe su perfil, para poder seguir interactuando con el sistema con los permisos que tenga su perfil.
+    \item \textbf{Registrando usuario}: La forma que tiene el administrador de ingresar un nuevo usuario al sistema, indicando el perfil que va a utilizar.
+    \item \textbf{Removiendo usuario}: El administrador le saca el acceso al sistema a un usuario en particular.
+    \item \textbf{Consultando usuarios actuales}: El administrador lista los usuarios actuales.
+    \item \textbf{Registrando pozo}: De esta forma el ingeniero hace que el sistema considere un nuevo pozo en su procesamiento y lo agregue al simulador de simoil entre otras cosas.
+    \item \textbf{Registrando sensor de pozo}: El ingeniero registra un nuevo sensor indicando el pozo al que pertenece para que el sistema sepa a que pozo pertenece.
+    \item \textbf{Registrando válvula semiautomática}: El ingeniero registra una nueva válvula semiautomática indicando el pozo al que pertenece y su función.
+    \item \textbf{Modificando rangos de sistema ARS}: Se modifican los rangos de limpieza de datos.
+    \item \textbf{Consultando estado actual o pasado de los pozos}: Para consultar una historia de los valores de los sensores, posiciones de las válvulas y estados de alerta para cada pozo.
+    \item \textbf{Consultando formulario de informes}: Se listan los informes detallados de eventos detectados por el sistema.
+    \item \textbf{Consultando alarmas activas}: De esta forma el jefe de operaciones tiene acceso a las alarmas activas.
+    \item \textbf{Indicando falsa alarma}: El jefe de operaciones cierra una alarma indicando que fue falsa alarma.
+    \item \textbf{Indicando acción correctiva tomada}: El jefe de operaciones cierra una alarma indicando la acción correctiva tomada.
 \end{enumerate}
 
 \subsection{Especificacion}
@@ -180,7 +180,7 @@
 \label{cu:\givenculabel}
 \end{table}}
 
-En esta seccion identificaremos los tres casos de uso principales y los especificaremos en detalle utilizando la tabla de curso normal/alternativo.
+En esta sección identificaremos los tres casos de uso principales y los especificaremos en detalle utilizando la tabla de curso normal/alternativo.
 
 \begin{casodeuso}
   \cutitle{Registrar válvula semiautomática}
@@ -277,6 +277,8 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Medición: Las anomalías son detectadas en menos de 5 minutos.
 \end{itemize}
 
+\pagebreak
+
 4)
 \begin{itemize}
   \item Descripción: Ante un pronóstico catastrófico, la alarma debe ser envíada inmediatamente.
@@ -323,6 +325,8 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Medición: El sistema sigue en funcionamiento.
 \end{itemize}
 
+\pagebreak
+
 4)
 \begin{itemize}
   \item Descripción: El servicio de envío de SMS debe estar siempre en funcionamiento.
@@ -368,6 +372,8 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Medición: Debido al método de seguridad usado para enviar los datos, en menos del 0.00000001\% de los casos el agente externo logra descifrar los datos en menos de 1 semana.
 \end{itemize}
 
+\pagebreak
+
 3)
 \begin{itemize}
   \item Descripción: Un determinado perfil de usuario sólo puede ejecutar las acciones permitidas por dicho perfil.
@@ -382,7 +388,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
 \subsubsection{Usabilidad}
 1)
 \begin{itemize}
-  \item Descripción: El sistema debe ser fácil de aprendera usar y agradable a la vista.
+  \item Descripción: El sistema debe ser fácil de aprender a usar y agradable a la vista.
   \item Fuente: Usuario.
   \item Estímulo: Interactúa con el sistema.
   \item Artefacto: Interfaz de Usuario.
@@ -411,30 +417,42 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
 
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
-		\includegraphics[scale=0.8]{figures/architecture.png}
+		\includegraphics[scale=0.70]{figures/architecture.png}
 	}
-	\caption{Diagrama general de la arquitectura del sistema ARS de supervision automatica de yacimientos.}
+	\caption{Diagrama general de la arquitectura del sistema ARS de supervisión automática de yacimientos.}
 \end{figure}
 
-\subsection{Procesamiento de mediciones}
+La arquitectura del Sistema ARS busca procesar los datos de alta frecuencia que son producidos por los diferentes controladores de válvula semiautomática del Sistema de Control de Pozos Inteligentes (SCPO). Cada controlador publica las mediciones de la válvula en un Publish/Suscribe Bus al que esta suscripto el componente de Procesamiento de Mediciones. El Procesador de Mediciones (sección \ref{procesador_mediciones}) básicamente se ocupa de transformar los datos de forma tal que puedan ser consumidos por el Detector de Anomalías.
+
+El Detector de Anomalías (sección \ref{detector_anomalias}) identifica las diferentes anomalías en las mediciones, que son consumidas por el Gestor de Anomalías (sección \ref{gestor_anomalias}). Este componente notifica por SMS al Jefe de Operaciones del yacimiento de que se ha producido una anomalía, y a su vez guarda diferentes registros en los repositorios de Eventos y Anomalías para que luego puedan ser accedidos de forma externa. El componente también se comunica con un Gestor de Backups para garantizar la integridad de los datos ante casos de perdida o siniestros. Para cumplir con las normas internacionales, toda anomalía también es reportada a los organismos certificadores de calidad como el Ente Regulador de Seguridad Medio Ambiental (ERSMA). Para garantizar la confidencialidad de los datos, toda comunicación con un sistema externo es cifrada usando algoritmos simétricos y de clave publica/privada.
+
+Todo usuario que queda acceder al Sistema de Informes de Eventos y al Sistema de Control y Monitoreo se debe autenticar por medio del Sistema de Usuarios. De esta forma los empleados del Ministerio y el Ente Regulador pueden acceder a los datos en todo momento.
+
+\subsection{Procesamiento de mediciones}  \label{procesador_mediciones}
 
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
-		\includegraphics[scale=0.8]{figures/ProcesadorDeMediciones.png}
+		\includegraphics[scale=0.70]{figures/ProcesadorDeMediciones.png}
 	}
 	\caption{Diagrama de arquitectura de procesamiento de mediciones.}
 \end{figure}
 
-\subsection{Detector de anomalias}
+El Procesador de Mediciones consume datos de los diferentes controladores de válvula semiautomática de cada pozo a través de un Publish/Suscribe bus y una cola. Dada la alta frecuencia de los datos, no es factible ni practico guardarlos todos en una primera instancia antes de comenzar su procesamiento. Para reducir la cantidad de datos, primero se corre un Filtro de Factibilidad para remover los datos que no son realistas. Este filtro logra remover el 80\% de los datos espurios. Luego, los datos son agregados por el Agregador de Mediciones, el cual transforma los datos de alta frecuencia en datos en intervalos manejables de 15 minutos. Estos datos son luego consumidos por un Persistidor de Mediciones, que guarda los datos procesados y de menor dimensionalidad en un Repositorio de Mediciones. Estos datos también son enviados por medio de una cola al Detector de Anomalías.
+
+Un dato que consideramos interesante explorar es la alta frecuencia de los datos. En caso de una caída del sistema, guardar los datos en un Repositorio luego del proceso de filtrado puede no ser relevante, dado que al momento en el que el sistema logra recuperarse rápidamente de una caída, datos muy similares van a ser incorporados desde los controladores de pozo inmediatamente, detectando posteriormente las mismas anomalías que hubiesen sido detectadas en caso de que el sistema hubiese funcionado correctamente.
+
+\subsection{Detector de anomalías} \label{detector_anomalias}
 
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
 		\includegraphics[scale=0.8]{figures/DetectorDeAnomalias.png}
 	}
-	\caption{Diagrama de arquitectura del detector de anomalias.}
+	\caption{Diagrama de arquitectura del detector de anomalías.}
 \end{figure}
 
-\subsection{Gestor de anomalias}
+El Detector de Anomalías procesa los datos provistos por el Persistidor de Mediciones, arrancando con el Procesador de Features. Este componente extrae una serie de features o características con la asistencia del Sistema SimOil especificado en el trabajo anterior. Una vez procesados estos datos, se utiliza un clasificador binario (por el momento un modelo Logístico que ya esta entrenado) para definir si el dato procesado es o no una anomalía. En caso de ser una anomalía, se envía al Persistidor de Anomalías para bajar la probabilidad de perdida de datos ante un problema del sistema. Estos datos luego son enviados al Gestor de Anomalías.
+
+\subsection{Gestor de anomalias} \label{gestor_anomalias}
 
 \begin{figure}[H]
 	\resizebox{\textwidth}{!}{
@@ -443,5 +461,6 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
 	\caption{Diagrama de arquitectura del gestor de mediciones.}
 \end{figure}
 
+Al recibir datos de anomalias detectadas desde el Persistidor de Anomalias, la Alarma de Anomalias se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalia. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
 
 \end{document}
