@@ -151,7 +151,7 @@
     \item \textbf{Indicando acción correctiva tomada}: El jefe de operaciones cierra una alarma indicando la acción correctiva tomada.
 \end{enumerate}
 
-\subsection{Especificacion}
+\subsection{Especificación}
 
 \newcommand{\curef}[1]{\textbf{Caso de uso \ref{cu:#1}}}
 \newcommand{\cutitle}[1]{\renewcommand{\givencutitle}{#1}}
@@ -172,18 +172,25 @@
 \newenvironment{casodeuso}
 {\begin{table}[H]}{%
 \begin{tabular}{|p{0.5\linewidth} p{0.5\linewidth}|}\hline
-\multicolumn{2}{|l|}{\textbf{Caso de Uso: \givencutitle}} \\
+\multicolumn{2}{|l|}{\textbf{Caso de Uso: \ref{cu:\givenculabel}) \givencutitle}} \\
+\multicolumn{2}{|l|}{\textbf{Actor:} \givencuactors} \\
+\multicolumn{2}{|l|}{\textbf{Pre:} \givencupre} \\
+\multicolumn{2}{|l|}{\textbf{Post:} \givencupost} \\
 \vspace{1px}\textbf{Curso Normal} & \vspace{1px}\textbf{Curso Alternativo} \\
 \givencucourse
 \hline
 \end{tabular}
+\caption{\givencutitle}
 \label{cu:\givenculabel}
 \end{table}}
 
 En esta sección identificaremos los tres casos de uso principales y los especificaremos en detalle utilizando la tabla de curso normal/alternativo.
 
 \begin{casodeuso}
-  \cutitle{Registrar válvula semiautomática}
+  \cutitle{Registrando válvula semiautomática}
+  \cuactors{Ingeniero}
+  \cupre{Ingeniero esta autenticado}
+  \cupost{Válvula y su información queda registrada en el sistema para un poso especifico}
   \cucourse{
     1. El ingeniero selecciona la opción de ingresar una válvula & \\
     2. El sistema carga el listado de pozos actuales y sus válvulas \\
@@ -199,7 +206,10 @@ En esta sección identificaremos los tres casos de uso principales y los especif
 \end{casodeuso}
 
 \begin{casodeuso}
-  \cutitle{Indicar acción correctiva tomada}
+  \cutitle{Indicando acción correctiva tomada}
+  \cuactors{Jefe de operaciones}
+  \cupre{Jefe de operaciones esta autenticado}
+  \cupost{El evento queda cerrado junto con su informe}
   \cucourse{
     1. El jefe de operaciones selecciona la opción de indicar acción correctiva para la alarma seleccionada en la lista de alarmas activas & \\
     2. El sistema carga en detalle la alarma seleccionada & \\
@@ -213,7 +223,10 @@ En esta sección identificaremos los tres casos de uso principales y los especif
 \end{casodeuso}
 
 \begin{casodeuso}
-  \cutitle{Consultar estado actual o pasado de los pozos}
+  \cutitle{Consultando estado actual o pasado de los pozos}
+  \cuactors{Empleado del ministerio, Ingeniero o Jefe de Operaciones}
+  \cupre{El usuario esta autenticado y tiene el perfil correspondiente}
+  \cupost{El usuario accedió a la información del estado de los pozos que necesitaba}
   \cucourse{
     1. El usuario selecciona la opción de listar los pozos & \\
     2. El sistema lista los pozos & \\
@@ -416,10 +429,10 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
 \subsection{Diagrama general}
 
 \begin{figure}[H]
-	\resizebox{\textwidth}{!}{
-		\includegraphics[scale=0.70]{figures/architecture.png}
-	}
-	\caption{Diagrama general de la arquitectura del sistema ARS de supervisión automática de yacimientos.}
+  \resizebox{\textwidth}{!}{
+    \includegraphics[scale=0.70]{figures/architecture.png}
+  }
+  \caption{Diagrama general de la arquitectura del sistema ARS de supervisión automática de yacimientos.}
 \end{figure}
 
 La arquitectura del Sistema ARS busca procesar los datos de alta frecuencia que son producidos por los diferentes controladores de válvula semiautomática del Sistema de Control de Pozos Inteligentes (SCPO). Cada controlador publica las mediciones de la válvula en un Publish/Suscribe Bus al que esta suscripto el componente de Procesamiento de Mediciones. El Procesador de Mediciones (sección \ref{procesador_mediciones}) básicamente se ocupa de transformar los datos de forma tal que puedan ser consumidos por el Detector de Anomalías.
@@ -431,10 +444,10 @@ Todo usuario que queda acceder al Sistema de Informes de Eventos y al Sistema de
 \subsection{Procesamiento de mediciones}  \label{procesador_mediciones}
 
 \begin{figure}[H]
-	\resizebox{\textwidth}{!}{
-		\includegraphics[scale=0.70]{figures/ProcesadorDeMediciones.png}
-	}
-	\caption{Diagrama de arquitectura de procesamiento de mediciones.}
+  \resizebox{\textwidth}{!}{
+    \includegraphics[scale=0.70]{figures/ProcesadorDeMediciones.png}
+  }
+  \caption{Diagrama de arquitectura de procesamiento de mediciones.}
 \end{figure}
 
 El Procesador de Mediciones consume datos de los diferentes controladores de válvula semiautomática de cada pozo a través de un Publish/Suscribe bus y una cola. Dada la alta frecuencia de los datos, no es factible ni practico guardarlos todos en una primera instancia antes de comenzar su procesamiento. Para reducir la cantidad de datos, primero se corre un Filtro de Factibilidad para remover los datos que no son realistas. Este filtro logra remover el 80\% de los datos espurios. Luego, los datos son agregados por el Agregador de Mediciones, el cual transforma los datos de alta frecuencia en datos en intervalos manejables de 15 minutos. Estos datos son luego consumidos por un Persistidor de Mediciones, que guarda los datos procesados y de menor dimensionalidad en un Repositorio de Mediciones. Estos datos también son enviados por medio de una cola al Detector de Anomalías.
@@ -444,10 +457,10 @@ Un dato que consideramos interesante explorar es la alta frecuencia de los datos
 \subsection{Detector de anomalías} \label{detector_anomalias}
 
 \begin{figure}[H]
-	\resizebox{\textwidth}{!}{
-		\includegraphics[scale=0.8]{figures/DetectorDeAnomalias.png}
-	}
-	\caption{Diagrama de arquitectura del detector de anomalías.}
+  \resizebox{\textwidth}{!}{
+    \includegraphics[scale=0.8]{figures/DetectorDeAnomalias.png}
+  }
+  \caption{Diagrama de arquitectura del detector de anomalías.}
 \end{figure}
 
 El Detector de Anomalías procesa los datos provistos por el Persistidor de Mediciones, arrancando con el Procesador de Features. Este componente extrae una serie de features o características con la asistencia del Sistema SimOil especificado en el trabajo anterior. Una vez procesados estos datos, se utiliza un clasificador binario (por el momento un modelo Logístico que ya esta entrenado) para definir si el dato procesado es o no una anomalía. En caso de ser una anomalía, se envía al Persistidor de Anomalías para bajar la probabilidad de perdida de datos ante un problema del sistema. Estos datos luego son enviados al Gestor de Anomalías.
@@ -455,10 +468,10 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
 \subsection{Gestor de anomalias} \label{gestor_anomalias}
 
 \begin{figure}[H]
-	\resizebox{\textwidth}{!}{
-		\includegraphics[scale=0.8]{figures/GestorDeAnomalias.png}
-	}
-	\caption{Diagrama de arquitectura del gestor de mediciones.}
+  \resizebox{\textwidth}{!}{
+    \includegraphics[scale=0.8]{figures/GestorDeAnomalias.png}
+  }
+  \caption{Diagrama de arquitectura del gestor de mediciones.}
 \end{figure}
 
 Al recibir datos de anomalias detectadas desde el Persistidor de Anomalias, la Alarma de Anomalias se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalia. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
@@ -477,8 +490,8 @@ Al recibir datos de anomalias detectadas desde el Persistidor de Anomalias, la A
 \textbf{EZE Y CHRIS!} Por favor relean el TP y fíjense si pueden agregar mas cosas arriba. También vean si pueden escribir esto.
 
 \begin{enumerate}
-	\item Comparar "programming in the small" y "programming in the large" (disenio OO vs Arquitectura)
-	\item Conclusiones que saco el grupo
+  \item Comparar "programming in the small" y "programming in the large" (disenio OO vs Arquitectura)
+  \item Conclusiones que saco el grupo
 \end{enumerate}
 
 \end{document}
