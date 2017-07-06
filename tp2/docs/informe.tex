@@ -476,25 +476,9 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
 
 Al recibir datos de anomalias detectadas desde el Persistidor de Anomalias, la Alarma de Anomalias se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalia. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
 
-\textbf{Por favor asegurense que esto esta lo mas explicito posible:\\
-1. ¿Cómo se cumplen los requerimientos de disponibilidad?\\
-2. ¿Cómo se cumplen los requerimientos de seguridad?\\
-3. ¿Cómo es la interacción con los servicios externos? (Instrumentos de monitoreo) ¿Hay disponibilidad? ¿Seguridad? ¿Es tolerante a fallos?\\
-4. ¿Cómo se logra performance? ¿Se cumple pronóstico de evento catastrófico 24hs antes?\\
-5. ¿Cómo se informa a los entes reguladores?}
-
-\pagebreak
-
 \section{Conclusiones}
 
-%\textbf{EZE Y CHRIS!} Por favor relean el TP y fíjense si pueden agregar mas cosas arriba. También vean si pueden escribir esto.
-
-%\begin{enumerate}
-%  \item Comparar "programming in the small" y "programming in the large" (disenio OO vs Arquitectura)
-%  \item Conclusiones que saco el grupo
-%\end{enumerate}
-
-Durante estos dos trabajos prácticos vimos distintos enfoques a la hora de diseñar software. Durante el primer trabajo utilizamos el diseño orientado a objetos (DOO), lo cual nos permitió realizar un diseño de más bajo nivel que el concebido mediante las diferentes arquitecturas del sistema (vista de C&C + deployment). Con el DOO (programming in the small) pudimos diseñar reconociendo las distintas entidades de nuestro dominio del problema y convertirlas en objetos que se relacionan entre sí mediante envíos de mensajes. De esta manera es muy fácil implementar nuestra aplicación y comenzar a trabajar sobre ella. Este enfoque tiene algunas desventajas ya que no podemos ver algunos detalles como por ejemplo dónde van a correr nuestros procesos.
+Durante estos dos trabajos prácticos vimos distintos enfoques a la hora de diseñar software. Durante el primer trabajo utilizamos el diseño orientado a objetos (DOO), lo cual nos permitió realizar un diseño de más bajo nivel que el concebido mediante las diferentes arquitecturas del sistema (vista de C\&C + deployment). Con el DOO (programming in the small) pudimos diseñar reconociendo las distintas entidades de nuestro dominio del problema y convertirlas en objetos que se relacionan entre sí mediante envíos de mensajes. De esta manera es muy fácil implementar nuestra aplicación y comenzar a trabajar sobre ella. Este enfoque tiene algunas desventajas ya que no podemos ver algunos detalles como por ejemplo dónde van a correr nuestros procesos.
 
 Para poder ver más otros detalles del sistema, entra en juego la arquitectura (programming in the large) que justamente viene a llenar ese vacío. La arquitectura nos permite ver las relaciones entre las distintas estructuras del sistema, y como se relacionan entre ellas, lo que resulta en una visión más abarcativa de la aplicación, no sólo porque nos permite definir las interacciones de nuestros procesos en tiempo de ejecución (mediante los diagramas de Componentes y Conectores) sino porque también nos permite identificar en dónde va a estar corriendo cada uno de esos procesos (mediante la vista de deployment).
 
