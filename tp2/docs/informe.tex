@@ -102,6 +102,9 @@
 
 \usepackage[dvipsnames]{xcolor}
 
+% table of contents depth
+\setcounter{tocdepth}{3}
+
 \begin{document}
 % Estos comandos deben ir antes del \maketitle
 \materia{Ingeniería de Software II} % obligatorio
@@ -120,7 +123,7 @@
 
 \tableofcontents
 
-\vspace{5cm}
+\vspace{2cm}
 
 \begin{figure}[H]
     \centering
@@ -165,7 +168,7 @@ A modo de resumen, el ministerio ha puesto especial énfasis en las siguientes f
 	\item Gestión de las alarmas, formularios e informes de eventos críticos.
 	\item Acceso al sistema de monitoreo y control desde el Ministerio.
 	\item Acceso al sistema de informes de eventos críticos desde los entes reguladores.
-	\item Toda la información estará centralizada dentro del Ministerio. El sistema no debe tener ningún tipo de demoras, en especial en las búsquedas de eventos, y debe tener una alta disponibilidad. Se debe buscar un mecanismo para que las consultas recurrentes sean rápidas. Esto puede implementarse mediante caching.
+	\item Toda la información estará centralizada dentro del Ministerio. El sistema no debe tener ningún tipo de demoras, en especial en las búsquedas de eventos, y debe tener una alta disponibilidad. Se debe buscar un mecanismo para que las consultas recurrentes sean rápidas. Esto podría implementarse mediante caching.
 \end{enumerate}
 
 \section{Casos de uso}
@@ -290,7 +293,8 @@ En esta sección identificaremos los tres casos de uso principales y los especif
 
 \section{Atributos de calidad}
 
-Luego del Quality Attribute Workshop (QAW), la priorización de los atributos de calidad fue la siguiente:
+Antes de realizar la arquitectura, llevamos a cabo un Quality Attribute Workshop (QAW) para identificar los diferentes atributos de calidad requeridos. En nuestras reuniones con los stakeholders (consultas con el tutor), generamos, priorizamos y refinamos los diferentes atributos. Especificamos estos atributos de calidad mediante escenarios. La priorización final de los atributos de calidad que se acordó fue la siguiente:
+
 \begin{enumerate}
   \item Performance
   \item Disponibilidad
@@ -340,7 +344,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
 
 4)
 \begin{itemize}
-  \item Descripción: Ante un pronóstico catastrófico, la alarma debe ser envíada inmediatamente.
+  \item Descripción: Ante un pronóstico catastrófico, la alarma debe ser enviada inmediatamente.
   \item Fuente: Interna.
   \item Estímulo: Evento catastrófico detectado por el módulo Detector de Anomalías.
   \item Artefacto: Gestor de Anomalías.
@@ -359,7 +363,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Artefacto: Sistema de Procesamiento de Mediciones.
   \item Entorno: Degradado.
   \item Respuesta: El sistema envía los datos a otra instancia de procesamiento de mediciones.
-  \item Medición: En el 99.99999999\% de los casos los datos se procesaron correctamente.
+  \item Medición: En el 99.999\% de los casos los datos se procesaron correctamente.
 \end{itemize}
 
 2)
@@ -370,7 +374,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Artefacto: Sistema de Informes de Eventos.
   \item Entorno: Degradado.
   \item Respuesta: El balanceador de carga asigna otro sistema de informes de eventos para realizar la petición.
-  \item Medición: En el 99.99999999\% de los casos los datos se visualizaron correctamente.
+  \item Medición: En el 99.999\% de los casos los datos se visualizaron correctamente.
 \end{itemize}
 
 3)
@@ -405,7 +409,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Artefacto: Gestor de Anomalías.
   \item Entorno: Degradado.
   \item Respuesta: El sistema redirige la petición al Gestor de Backups.
-  \item Medición: Los datos son obtenidos en el 99.99999999\% de las veces.
+  \item Medición: Los datos son obtenidos en el 99.999\% de las veces.
 \end{itemize}
 
 \subsubsection{Seguridad}
@@ -441,7 +445,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \item Artefacto: Sistema.
   \item Entorno: Normal.
   \item Respuesta: El sistema invalida la acción y muestra un mensaje de error indicando la incompatibilidad de la acción con el perfil del usuario.
-  \item Medición: En el 99.99999999\% de las veces la acción no va a ser permitida por el sistema.
+  \item Medición: Solo al probar una pagina a la que el cada tipo de usuario no debe tener acceso el sistema muestra un mensaje de error.
 \end{itemize}
 
 \subsubsection{Usabilidad}
@@ -520,7 +524,17 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
   \caption{Diagrama de arquitectura del gestor de mediciones.}
 \end{figure}
 
-Al recibir datos de anomalias detectadas desde el Persistidor de Anomalias, la Alarma de Anomalias se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalia. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
+Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la Alarma de Anomalías se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalía. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
+
+\subsection{¿Como satisface la arquitectura los atributos de calidad?}
+
+\subsubsection{Performance}
+\subsubsection{Disponibilidad}
+\subsubsection{Seguridad}
+\subsubsection{Usabilidad}
+\subsubsection{Modificabilidad}
+
+\pagebreak
 
 \section{Conclusiones}
 
