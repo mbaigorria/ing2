@@ -107,20 +107,66 @@
 \materia{Ingeniería de Software II} % obligatorio
 
 \titulo{TP2}
-\subtitulo{Alerta y Vigliancia de Yacimientos Semi-Automatico \\ \textbf{AVYSA} \\ \today}
+\subtitulo{Alerta y Vigliancia de Yacimientos Semi-Automático \\ \textbf{AVYSA} \\ \today}
 \grupo{}
 
 \integrante{Christian Cuneo}{755/13}{chriscuneo93@gmail.com}
 \integrante{Federico Beuter}{827/13}{federicobeuter@gmail.com}
 \integrante{Mauro Cherubini}{835/13}{cheru.mf@gmail.com}
 \integrante{Mario Ezequiel Ginsberg}{145/14}{ezequielginsberg@gmail.com}
-\integrante{Martin Baigorria}{575/14}{martinbaigorria@gmail.com}
+\integrante{Martín Baigorria}{575/14}{martinbaigorria@gmail.com}
 
 \maketitle
 
 \tableofcontents
 
+\vspace{5cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{figures/trabajadores.jpg}
+    \caption{Trabajadores arreglando un problema diagnosticado mediante el sistema ARS luego del segundo recuperatorio.}
+\end{figure}
+
 \pagebreak
+
+\section{Introducción}
+
+Luego de desarrollar el simulador SimOil, aprovechando que ya habíamos adquirido el conocimiento de dominio de la industria petrolera, el Ministerio de Energía se ha mostrado interesado en integrar dicho sistema de simulación al sistema de control de pozos inteligentes que posee la empresa petrolera estatal. Este sistema monitorea el flujo producido, el flujo de reinyección de gas/agua, las presiones y las temperaturas por pozo. De esta manera, se pueden diagnosticar problemas y gestionar mejor los recursos de cada yacimiento. La tecnología de pozos inteligentes utiliza una serie de sensores ubicados en cada pozo, que reportan datos de alta frecuencia. Dado el gran volumen de datos, los ingenieros requieren un sistema diseñado especialmente para identificar cualquier tipo de inconveniente a partir del estado de los pozos.
+
+Para poder integrar el sistema SimOil al sistema de control de pozos inteligentes, la solución planteada busca en primer lugar reducir la dimensionalidad de los datos de alta frecuencia para que los mismos sean mas simples de procesar a través de un sistema automatizado de supervisión de yacimiento denominado ARS. El sistema ARS luego preparara los datos almacenados para que luego puedan ser utilizados por los diferentes ingenieros de forma remota. A grandes rasgos, el sistema consistirá en un pipeline de tres etapas:
+
+\begin{figure}[H]
+  \resizebox{\textwidth}{!}{
+    \includegraphics[scale=1]{figures/pipeline.pdf}
+  }
+  \caption{Esquema ilustrativo del sistema. El sistema de pozos inteligentes provee los datos de alta frecuencia a partir de sensores, que son procesados por el sistema ARS. A grandes rasgos, el sistema consiste en un pipeline de tres etapas, el cual luego provee datos a los ingenieros.}
+\end{figure}
+
+Cada uno de estos módulos del pipeline tiene las siguientes características:
+\begin{enumerate}
+	\item Limpieza de datos: Dado que los datos producidos por los sensores pueden no ser realistas, los mismos se filtran antes de comenzar con su correspondiente procesamiento. Los especialistas del dominio nos han confirmado que es posible identificar aproximadamente un 80\% de las anomalías utilizando limites superiores e inferiores para las diferentes medidas.
+	\item Agregación de datos: El proceso de agregación transforma los datos de alta frecuencia en intervalos manejables de 15 minutos. Es razonable pensar que el estado de las variables de cada pozo es relativamente estable en intervalos lo suficientemente chicos, por lo que no tiene sentido procesar todas las mediciones de forma individual.
+	\item Detección de anomalías: Utilizando los datos procesados y agregados, en conjunto con las simulaciones provistas por el sistema SimOil, es posible detectar problemas en pozos individuales utilizando algoritmos de Machine Learning. Las diferentes anomalías detectadas son luego reportadas al Jefe de Operaciones del respectivo yacimiento mediante SMS. Estos datos también están disponibles para que otros usuarios autorizados los consulten mediante una interfaz web.
+\end{enumerate}
+
+Al detectarse una anomalía, también se genera una alarma sonora en el centro de control del respectivo yacimiento donde sucedió el problema. Las alarmas pueden ser deshabilitadas de forma manual o mediante la interfaz del sistema ARS. Para que el sistema vuelva a operar de forma normal, el Jefe de Operaciones debe tomar una acción correctiva de ser necesaria o reportar un falso positivo de la alarma.
+
+Dado que las normas internacionales son muy estrictas, se requiere que todos los registros de anomalías sean almacenados e informados a organismos certificadores de calidad, como el Ente Regulador de Seguridad Medio Ambiental (ERSMA). Los formularios de eventos deben estar disponibles para el Ministerio y para el Ente Regulador en todo momento. En cuanto a la accesibilidad de los datos y los reportes, el sistema también debe contar con perfiles de usuarios según sus cargos y responsabilidades.
+
+El costo de construir un yacimiento petrolero es considerable. Cualquier decisión que no se tome de forma correcta puede tener un gran costo para el Ministerio. Por esta razón se considera que los datos son muy sensibles, haciendo necesario el almacenamiento de los mismos en un sitio seguro con un sistema de backup en caso de perdida o siniestro.
+
+A modo de resumen, el ministerio ha puesto especial énfasis en las siguientes funcionalidades y atributos de calidad:
+\begin{enumerate}
+	\item Control de acceso diferenciado según el perfil del usuario.
+	\item Tolerancia a fallas.
+	\item Manejo de grandes volúmenes de datos.
+	\item Seguridad a nivel de usuarios y acceso a datos.
+	\item Gestión de las alarmas, formularios e informes de eventos críticos.
+	\item Acceso al sistema de monitoreo y control desde el Ministerio.
+	\item Acceso al sistema de informes de eventos críticos desde los entes reguladores.
+	\item Toda la información estará centralizada dentro del Ministerio. El sistema no debe tener ningún tipo de demoras, en especial en las búsquedas de eventos, y debe tener una alta disponibilidad. Se debe buscar un mecanismo para que las consultas recurrentes sean rápidas. Esto puede implementarse mediante caching.
+\end{enumerate}
 
 \section{Casos de uso}
 
@@ -245,13 +291,13 @@ En esta sección identificaremos los tres casos de uso principales y los especif
 \section{Atributos de calidad}
 
 Luego del Quality Attribute Workshop (QAW), la priorización de los atributos de calidad fue la siguiente:
-\begin{itemize}
+\begin{enumerate}
   \item Performance
   \item Disponibilidad
   \item Seguridad
   \item Usabilidad
   \item Modificabilidad
-\end{itemize}
+\end{enumerate}
 
 Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo a lo relevado.
 
