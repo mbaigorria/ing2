@@ -524,6 +524,15 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
 
 Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la Alarma de Anomalías se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalía. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
 
+\subsection{Sistema de Monitoreo y Control} \label{gestor_anomalias}
+
+\begin{figure}[H]
+  \resizebox{\textwidth}{!}{
+    \includegraphics[scale=1]{figures/SistemaDeMonitoreoYControl.png}
+  }
+  \caption{Diagrama de arquitectura del Sistema de Monitoreo y Control.}
+\end{figure}
+
 \pagebreak
 
 \subsection{¿Como satisface la arquitectura los atributos de calidad?}
