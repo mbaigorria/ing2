@@ -171,7 +171,7 @@ A modo de resumen, el ministerio ha puesto especial énfasis en las siguientes f
 	\item Toda la información estará centralizada dentro del Ministerio. El sistema no debe tener ningún tipo de demoras, en especial en las búsquedas de eventos, y debe tener una alta disponibilidad. Se debe buscar un mecanismo para que las consultas recurrentes sean rápidas. Esto podría implementarse mediante caching.
 \end{enumerate}
 
-\section{Casos de uso}
+\section{Casos de uso} \label{cu}
 
 \subsection{Diagrama}
 
@@ -479,9 +479,7 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
 \subsection{Diagrama general}
 
 \begin{figure}[H]
-  \resizebox{\textwidth}{!}{
-    \includegraphics[scale=0.70]{figures/architecture.png}
-  }
+  \centerline{\includegraphics[scale=0.8]{figures/architecture.png}}
   \caption{Diagrama general de la arquitectura del sistema ARS de supervisión automática de yacimientos.}
 \end{figure}
 
@@ -519,18 +517,24 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
 
 \begin{figure}[H]
   \resizebox{\textwidth}{!}{
-    \includegraphics[scale=0.8]{figures/GestorDeAnomalias.png}
+    \includegraphics[scale=1]{figures/GestorDeAnomalias.png}
   }
-  \caption{Diagrama de arquitectura del gestor de mediciones.}
+  \caption{Diagrama de arquitectura del Gestor de Anomalías.}
 \end{figure}
 
 Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la Alarma de Anomalías se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalía. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
 
+\pagebreak
+
 \subsection{¿Como satisface la arquitectura los atributos de calidad?}
+
+A continuación explicaremos de forma mas explicita como la arquitectura propuesta satisface los atributos de calidad, tomando como punto de partida los escenarios especificados en la Sección \ref{cu}.
 
 \subsubsection{Performance}
 \subsubsection{Disponibilidad}
 \subsubsection{Seguridad}
+Hablar sobre el hecho de que alguien puede manipular los sensores de un pozo. Decir que se podría instalar un sistema biométrico para que solo personal autorizado tenga acceso a los sensores.
+
 \subsubsection{Usabilidad}
 \subsubsection{Modificabilidad}
 
