@@ -143,7 +143,7 @@ Para poder integrar el sistema SimOil al sistema de control de pozos inteligente
   \resizebox{\textwidth}{!}{
     \includegraphics[scale=1]{figures/pipeline.pdf}
   }
-  \caption{Esquema ilustrativo del sistema. El sistema de pozos inteligentes provee los datos de alta frecuencia a partir de sensores, que son procesados por el sistema ARS. A grandes rasgos, el sistema consiste en un pipeline de tres etapas, el cual luego provee datos a los ingenieros.}
+  \caption{Esquema ilustrativo del sistema. El sistema de pozos inteligentes provee los datos de alta frecuencia a partir de sensores, que son procesados por el sistema ARS. A grandes rasgos, el sistema consiste en un pipeline de tres etapas, el cual luego provee datos a los usuarios autorizados a través del Sistema de Monitoreo y Control.}
 \end{figure}
 
 Cada uno de estos módulos del pipeline tiene las siguientes características:
@@ -483,11 +483,17 @@ Para cada tipo de atributo de calidad definimos distintos escenarios de acuerdo 
   \caption{Diagrama general de la arquitectura del sistema ARS de supervisión automática de yacimientos.}
 \end{figure}
 
-La arquitectura del Sistema ARS busca procesar los datos de alta frecuencia que son producidos por los diferentes controladores de válvula semiautomática del Sistema de Control de Pozos Inteligentes (SCPO). Cada controlador publica las mediciones de la válvula en un Publish/Suscribe Bus al que esta suscripto el componente de Procesamiento de Mediciones. El Procesador de Mediciones (sección \ref{procesador_mediciones}) básicamente se ocupa de transformar los datos de forma tal que puedan ser consumidos por el Detector de Anomalías.
+\pagebreak
 
-El Detector de Anomalías (sección \ref{detector_anomalias}) identifica las diferentes anomalías en las mediciones, que son consumidas por el Gestor de Anomalías (sección \ref{gestor_anomalias}). Este componente notifica por SMS al Jefe de Operaciones del yacimiento de que se ha producido una anomalía, y a su vez guarda diferentes registros en los repositorios de Eventos y Anomalías para que luego puedan ser accedidos de forma externa. El componente también se comunica con un Gestor de Backups para garantizar la integridad de los datos ante casos de perdida o siniestros. Para cumplir con las normas internacionales, toda anomalía también es reportada a los organismos certificadores de calidad como el Ente Regulador de Seguridad Medio Ambiental (ERSMA). Para garantizar la confidencialidad de los datos, toda comunicación con un sistema externo es cifrada usando algoritmos simétricos y de clave publica/privada.
+La arquitectura del Sistema ARS busca procesar los datos de alta frecuencia que son producidos por los diferentes controladores de válvula semiautomática del Sistema de Control de Pozos Inteligentes (SCPO). Cada controlador publica las mediciones de la válvula en un Publish/Suscribe Bus al que esta suscripto el componente de Procesamiento de Mediciones. El Procesador de Mediciones (sección \ref{procesador_mediciones}) básicamente se ocupa de transformar los datos de forma tal que puedan ser consumidos por el Detector de Anomalías. Notar que los datos llegan a los procesadores de mediciones de forma asíncrona, el emisor no se bloquea. Dada la gran cantidad de datos, procesar todas las mediciones sin perdidas es sumamente complejo. Por esta razón, se decidió llevar a cabo un proceso de sampling aleatorio. Aprovechando que las mediciones consecutivas de cada controlador en general no cambian, los procesos funcionan utilizando toda su capacidad aunque perdiendo algunas mediciones. El matemático de nuestro equipo ha mostrado que dada la frecuencia de las mediciones por controlador, existe un numero procesos necesarios en función de la cantidad de controladores conectados al sistema tal que la perdida de información converge a cero. Dada cierta tolerancia, este numero de procesos no es prohibitivo dada las características del hardware disponible en la actualidad.
 
-Todo usuario que queda acceder al Sistema de Informes de Eventos y al Sistema de Control y Monitoreo se debe autenticar por medio del Sistema de Usuarios. De esta forma los empleados del Ministerio y el Ente Regulador pueden acceder a los datos en todo momento.
+Una vez preprocesadas las mediciones, dado que la dimensionalidad de las mismas ahora es considerablemente menor, pueden ser enviadas mediante un pipe al Detector de Anomalías. El Detector de Anomalías (sección \ref{detector_anomalias}) identifica las diferentes anomalías en las mediciones, que son consumidas por el Gestor de Anomalías (sección \ref{gestor_anomalias}). Este componente notifica por SMS al Jefe de Operaciones del yacimiento de que se ha producido una anomalía y guarda diferentes registros en los Repositorios de Eventos y de Anomalías. El componente también se comunica con un Gestor de Backups mediante un call asincronico (no bloqueante) para garantizar la integridad de los datos ante casos de perdida o siniestros. Para cumplir con las normas internacionales, toda anomalía también es reportada a los organismos certificadores de calidad como el Ente Regulador de Seguridad Medio Ambiental (ERSMA). 
+
+Utilizando los datos que el Gestor de Anomalías guarda en el Repositorio de Eventos y el Repositorio de Anomalías, el Sistema de Monitoreo y Control (sección \ref{monitoreo_y_control}) provee diferentes servicios a los usuarios autorizados, sean los ingenieros de cada yacimiento, los encargados de las auditorias del ERSMA o el jefe de operaciones. Estos usuarios primero deben ser autenticados mediante el uso de un usuario y una clave.
+
+Dado que el Ministerio de Energía estaba sumamente interesado en que las busquedas de eventos funcionen rápido, y considerando que en general las consultas se repiten temporalmente, decidimos agregar una cache LRU para el Repositorio de Eventos y el de Anomalías.
+
+Para garantizar la confidencialidad de los datos, toda comunicación con un sistema externo es cifrada usando algoritmos simétricos (SMS y sistema ERSMA) y de clave publica/privada (otros usuarios).
 
 \subsection{Procesamiento de mediciones}  \label{procesador_mediciones}
 
@@ -524,7 +530,7 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
 
 Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la Alarma de Anomalías se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalía. Luego a los datos se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos sobre anomalías también son enviados a un Gestor de Backups que se ocupa mediante un conjunto de racks de RAIDs para tener mayor redundancia. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
 
-\subsection{Sistema de Monitoreo y Control} \label{gestor_anomalias}
+\subsection{Sistema de Monitoreo y Control} \label{monitoreo_y_control}
 
 \begin{figure}[H]
   \resizebox{\textwidth}{!}{
