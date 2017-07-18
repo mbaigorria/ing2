@@ -541,11 +541,20 @@ Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la
   \caption{Diagrama de arquitectura del Sistema de Monitoreo y Control.}
 \end{figure}
 
-El Sistema de Monitoreo y control se ocupa de dar una interfaz unificada para los usuarios externos del sistema, sean ingenieros, el jefe de operaciones o empleados del ERSMA. El mismo provee un control de acceso diferenciado segun el tipo de usuario mediante el Sistema de Usuarios y los repositorios de Permisos y de Claves.
+El Sistema de Monitoreo y control se ocupa de dar una interfaz unificada para los usuarios externos del sistema, sean ingenieros, el jefe de operaciones o empleados del ERSMA. El mismo provee un control de acceso diferenciado según el tipo de usuario mediante el Sistema de Usuarios y los repositorios de Permisos y de Claves.
 
-Al suceder una alarma, el Jefe de Operaciones del yacimiento puede ingresar al sistema con su login y luego gestionar las alarmas mediante el Gestor de Alarmas. De esta manera el Jefe de Operaciones puede tomar uan accion correctiva o reportar un falso positivo de la alarma. Al tomar una decision se completa el informe correspondiente a la anomalia en el Repositorio de Eventos.
+Al suceder una alarma, el Jefe de Operaciones del yacimiento puede ingresar al sistema con su login y luego gestionar las alarmas mediante el Gestor de Alarmas. De esta manera el Jefe de Operaciones puede tomar una acción correctiva o reportar un falso positivo de la alarma. Al tomar una decisión se completa el informe correspondiente a la anomalía en el Repositorio de Eventos.
 
-Tomando en cuenta que el ministerio nos ha dicho que toda busqueda realizada por un usuario se realiza nuevamente con una alta probabilidad, agregamos una cache LRU de busquedas entre el Buscador de Registros y los repositorios de Eventos y Anomalias. Si hay un hit de cache, los repositorios centrales no se consultan y la velocidad de respuesta es mayor. Si hay un miss, la misma cache redirige la busqueda al respectivo repositorio y luego la guarda. En caso de que algun cambio sea realizado por el Gestor de Alarmas, los repositorios le notifican a la cache de que los datos ahora son invalidos y la cache settea el dirty bit de la entrada correspondiente.
+Tomando en cuenta que el ministerio nos ha dicho que toda búsqueda realizada por un usuario se realiza nuevamente con una alta probabilidad, agregamos un Controlador de Cache entre el Buscador de Registros y los repositorios de Eventos y Anomalías para acelerar el tiempo de respuesta de las consultas.
+
+\begin{figure}[H]
+ \resizebox{\textwidth}{!}{
+    \includegraphics[scale=1]{figures/ControladorDeCache.png}
+  }
+  \caption{Diagrama de arquitectura del Controlador de Cache.}
+\end{figure}
+
+En una primera etapa, el controlador de cache debe verificar que los datos guardados en la cache siguen siendo vigentes. El Detector de Cambios consulta algún tipo de identificador único de consulta (un hash) de la Cache LRU que satisface la consulta (se podría agregar un componente que haga hashes, no lo consideramos necesario). Luego de alguna manera verifica que no se han realizado cambios en los repositorios de Eventos y Anomalías con una consulta rápida. En caso de que se hayan realizado cambios, se le comunica al Gestor de Consultas de que debe realizar la consulta desde los repositorios de Eventos y Anomalías. Caso contrario, toma los datos de la Cache. Los calls sincrónicos se podrían hacer de (1) a (2) y luego el resultado se podría reportar a la interfaz de consultas. A nivel arquitectura, se podría asumir a priori que la cache esta actualizada, y de forma asíncrona también consultar si se ha detectado un cambio para ganar mas velocidad. Sin embargo, si la detección de cambios es lo suficientemente rápida, esto agrega complejidad y no es necesario.
 
 \pagebreak
 
