@@ -530,7 +530,7 @@ El Detector de Anomalías procesa los datos provistos por el Persistidor de Medi
   \caption{Diagrama de arquitectura del Gestor de Anomalías.}
 \end{figure}
 
-Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la Alarma de Anomalías se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalía. También se envía el registro al Sistema del ERSMA. Estas dos conexiones externas se hacen utilizando un cifrado de clave simétrica, cuya clave podría estar en un repositorio o hardcodeado en la misma alarma. A los datos luego se les asigna un timestamp y son guardados en el Repositorio de Anomalías y en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos de anomalías también son enviados a un Gestor de Backups mediante un call asincronico. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
+Al recibir datos de anomalías detectadas desde el Persistidor de Anomalías, la Alarma de Anomalías se ocupa de notificar al Jefe de Operaciones del correspondiente yacimiento de que se ha producido una anomalía. También se envía el registro al Sistema del ERSMA. Estas dos conexiones externas se hacen utilizando un cifrado de clave simétrica, cuya clave podría estar en un repositorio o hardcodeado en la misma alarma. A los datos luego se les asigna un timestamp y son guardados en el Repositorio de Eventos. Para lograr una mayor disponibilidad y tener un sistema tolerante a fallas, los datos de anomalías también son enviados a un Gestor de Backups mediante un call asincronico. En caso de falla, los procesos del componente se reinician y buscan los datos sobre las ultimas fallas que han ocurrido y no han sido reportadas desde este repositorio.
 
 \subsection{Sistema de Monitoreo y Control} \label{monitoreo_y_control}
 
@@ -546,6 +546,8 @@ El Sistema de Monitoreo y control se ocupa de dar una interfaz unificada para lo
 Al suceder una alarma, el Jefe de Operaciones del yacimiento puede ingresar al sistema con su login y luego gestionar las alarmas mediante el Gestor de Alarmas. De esta manera el Jefe de Operaciones puede tomar una acción correctiva o reportar un falso positivo de la alarma. Al tomar una decisión se completa el informe correspondiente a la anomalía en el Repositorio de Eventos.
 
 Tomando en cuenta que el ministerio nos ha dicho que toda búsqueda realizada por un usuario se realiza nuevamente con una alta probabilidad, agregamos un Controlador de Cache entre el Buscador de Registros y los repositorios de Eventos y Anomalías para acelerar el tiempo de respuesta de las consultas.
+
+Por ultimo como parte del control del sistema se permite el ingreso y modificación de los pozos que se quieren considerar para la simulación y por lo tanto predicción mas acertada y mas a futuro. Para esto tenemos un Administrador de Pozos de Yacimientos que se encarga de controlar los pozos y los sensores registrados para el modelo de simulación. También controla ciertos parámetros de la simulación modificables por requerimiento. Este componente persiste las configuraciones en un repositorio que es el que va a usar el simulador SimOil para crear su modelo de simulación.
 
 \begin{figure}[H]
  \resizebox{\textwidth}{!}{
